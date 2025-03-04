@@ -47,18 +47,32 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Line, Bar } from "react-chartjs-2";
 import {
-	ChartContainer,
-	ChartTooltip,
-	ChartTooltipContent,
-	ChartLegend,
-	// ChartLegendItem,
-	// ChartGrid,
-	// ChartArea,
-	// ChartXAxis,
-	// ChartYAxis,
-	// ChartBar,
-} from "@/components/ui/chart";
+	Chart as ChartJS,
+	ArcElement,
+	Tooltip,
+	Legend,
+	LineElement,
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	PointElement,
+	Filler,
+} from "chart.js";
+
+// Register the Chart.js components
+ChartJS.register(
+	ArcElement,
+	Tooltip,
+	Legend,
+	LineElement,
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	PointElement,
+	Filler
+);
 
 export default function Dashboard() {
 	const [isDarkMode, setIsDarkMode] = useState(false);
@@ -167,76 +181,76 @@ export default function Dashboard() {
 			{/* Mobile Menu Overlay */}
 			{isMobileMenuOpen && (
 				<div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm lg:hidden">
-					<div className="fixed inset-y-0 left-0 z-50 w-3/4 max-w-xs bg-background p-6 shadow-lg">
-						<div className="flex items-center justify-between mb-8">
-							<span className="text-xl font-bold">FinancePro</span>
+					<div className="fixed inset-y-0 left-0 z-50 w-[85%] max-w-xs bg-background p-4 shadow-lg">
+						<div className="flex items-center justify-between mb-6">
+							<span className="text-lg font-bold">FinancePro</span>
 							<Button
 								variant="ghost"
 								size="icon"
 								onClick={() => setIsMobileMenuOpen(false)}
 							>
-								<XIcon className="h-6 w-6" />
+								<XIcon className="h-5 w-5" />
 							</Button>
 						</div>
-						<nav className="space-y-6">
-							<div className="space-y-2">
+						<nav className="space-y-4">
+							<div className="space-y-1">
 								<Button
 									variant="ghost"
-									className="w-full justify-start"
+									className="w-full justify-start text-sm h-9"
 									asChild
 								>
 									<a href="#" className="flex items-center">
-										<HomeIcon className="mr-2 h-5 w-5" />
+										<HomeIcon className="mr-2 h-4 w-4" />
 										Dashboard
 									</a>
 								</Button>
 								<Button
 									variant="ghost"
-									className="w-full justify-start"
+									className="w-full justify-start text-sm h-9"
 									asChild
 								>
 									<a href="#" className="flex items-center">
-										<LineChartIcon className="mr-2 h-5 w-5" />
+										<LineChartIcon className="mr-2 h-4 w-4" />
 										Analytics
 									</a>
 								</Button>
 								<Button
 									variant="ghost"
-									className="w-full justify-start"
+									className="w-full justify-start text-sm h-9"
 									asChild
 								>
 									<a href="#" className="flex items-center">
-										<CreditCardIcon className="mr-2 h-5 w-5" />
+										<CreditCardIcon className="mr-2 h-4 w-4" />
 										Transactions
 									</a>
 								</Button>
 								<Button
 									variant="ghost"
-									className="w-full justify-start"
+									className="w-full justify-start text-sm h-9"
 									asChild
 								>
 									<a href="#" className="flex items-center">
-										<PieChartIcon className="mr-2 h-5 w-5" />
+										<PieChartIcon className="mr-2 h-4 w-4" />
 										Investments
 									</a>
 								</Button>
 								<Button
 									variant="ghost"
-									className="w-full justify-start"
+									className="w-full justify-start text-sm h-9"
 									asChild
 								>
 									<a href="#" className="flex items-center">
-										<UsersIcon className="mr-2 h-5 w-5" />
+										<UsersIcon className="mr-2 h-4 w-4" />
 										Accounts
 									</a>
 								</Button>
 								<Button
 									variant="ghost"
-									className="w-full justify-start"
+									className="w-full justify-start text-sm h-9"
 									asChild
 								>
 									<a href="#" className="flex items-center">
-										<SettingsIcon className="mr-2 h-5 w-5" />
+										<SettingsIcon className="mr-2 h-4 w-4" />
 										Settings
 									</a>
 								</Button>
@@ -300,37 +314,42 @@ export default function Dashboard() {
 				<main className="flex-1 lg:pl-64">
 					{/* Header */}
 					<header className="sticky top-0 z-40 border-b bg-background">
-						<div className="flex h-14 items-center justify-between px-4 md:px-6">
-							<div className="flex items-center gap-2">
+						<div className="flex h-12 sm:h-14 items-center justify-between px-2 sm:px-4 md:px-6">
+							<div className="flex items-center gap-1 sm:gap-2">
 								<Button
 									variant="ghost"
 									size="icon"
-									className="lg:hidden"
+									className="h-8 w-8 lg:hidden"
 									onClick={() => setIsMobileMenuOpen(true)}
 								>
-									<MenuIcon className="h-6 w-6" />
+									<MenuIcon className="h-5 w-5" />
 									<span className="sr-only">Toggle Menu</span>
 								</Button>
-								<div className="relative md:w-64 lg:w-80">
-									<SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+								<div className="relative w-full max-w-[120px] sm:max-w-none sm:w-64 lg:w-80">
+									<SearchIcon className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
 									<Input
 										type="search"
 										placeholder="Search..."
-										className="w-full bg-background pl-8 md:w-60 lg:w-80"
+										className="h-8 w-full bg-background pl-7 text-xs sm:text-sm"
 									/>
 								</div>
 							</div>
-							<div className="flex items-center gap-2">
-								<Button variant="ghost" size="icon" onClick={toggleDarkMode}>
+							<div className="flex items-center gap-1 sm:gap-2">
+								<Button
+									variant="ghost"
+									size="icon"
+									className="h-8 w-8"
+									onClick={toggleDarkMode}
+								>
 									{isDarkMode ? (
-										<SunIcon className="h-5 w-5" />
+										<SunIcon className="h-4 w-4 sm:h-5 sm:w-5" />
 									) : (
-										<MoonIcon className="h-5 w-5" />
+										<MoonIcon className="h-4 w-4 sm:h-5 sm:w-5" />
 									)}
 									<span className="sr-only">Toggle theme</span>
 								</Button>
-								<Button variant="ghost" size="icon">
-									<BellIcon className="h-5 w-5" />
+								<Button variant="ghost" size="icon" className="h-8 w-8">
+									<BellIcon className="h-4 w-4 sm:h-5 sm:w-5" />
 									<span className="sr-only">Notifications</span>
 								</Button>
 								<DropdownMenu>
@@ -338,9 +357,9 @@ export default function Dashboard() {
 										<Button
 											variant="ghost"
 											size="icon"
-											className="rounded-full"
+											className="h-8 w-8 rounded-full"
 										>
-											<Avatar className="h-8 w-8">
+											<Avatar className="h-7 w-7 sm:h-8 sm:w-8">
 												<AvatarImage
 													src="/placeholder.svg?height=32&width=32"
 													alt="User"
@@ -369,84 +388,92 @@ export default function Dashboard() {
 					</header>
 
 					{/* Dashboard Content */}
-					<div className="p-4 md:p-6 space-y-6">
-						<div className="flex flex-col gap-2">
-							<h1 className="text-3xl font-bold tracking-tight">
+					<div className="p-2 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
+						<div className="flex flex-col gap-1 sm:gap-2">
+							<h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">
 								Financial Dashboard
 							</h1>
-							<p className="text-muted-foreground">
+							<p className="text-xs sm:text-sm text-muted-foreground">
 								Welcome back, John! Here's an overview of your finances.
 							</p>
 						</div>
 
 						{/* Financial Overview Cards */}
-						<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-							<Card>
-								<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-									<CardTitle className="text-sm font-medium">
+						<div className="grid grid-cols-1 xs:grid-cols-2 gap-2 sm:gap-4 md:grid-cols-2 lg:grid-cols-4">
+							<Card className="overflow-hidden">
+								<CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 sm:pb-2">
+									<CardTitle className="text-xs sm:text-sm font-medium">
 										Total Balance
 									</CardTitle>
-									<DollarSignIcon className="h-4 w-4 text-muted-foreground" />
+									<DollarSignIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
 								</CardHeader>
-								<CardContent>
-									<div className="text-2xl font-bold">$24,563.00</div>
-									<p className="text-xs text-muted-foreground">
+								<CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+									<div className="text-base sm:text-xl md:text-2xl font-bold">
+										$24,563.00
+									</div>
+									<p className="text-[10px] sm:text-xs text-muted-foreground">
 										<span className="text-emerald-500 flex items-center">
-											<ArrowUpIcon className="mr-1 h-4 w-4" />
+											<ArrowUpIcon className="mr-0.5 h-3 w-3 sm:mr-1 sm:h-4 sm:w-4" />
 											+2.5%
 										</span>{" "}
 										from last month
 									</p>
 								</CardContent>
 							</Card>
-							<Card>
-								<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-									<CardTitle className="text-sm font-medium">
+							<Card className="overflow-hidden">
+								<CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 sm:pb-2">
+									<CardTitle className="text-xs sm:text-sm font-medium">
 										Monthly Income
 									</CardTitle>
-									<ArrowUpIcon className="h-4 w-4 text-muted-foreground" />
+									<ArrowUpIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
 								</CardHeader>
-								<CardContent>
-									<div className="text-2xl font-bold">$5,231.89</div>
-									<p className="text-xs text-muted-foreground">
+								<CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+									<div className="text-base sm:text-xl md:text-2xl font-bold">
+										$5,231.89
+									</div>
+									<p className="text-[10px] sm:text-xs text-muted-foreground">
 										<span className="text-emerald-500 flex items-center">
-											<ArrowUpIcon className="mr-1 h-4 w-4" />
+											<ArrowUpIcon className="mr-0.5 h-3 w-3 sm:mr-1 sm:h-4 sm:w-4" />
 											+14.2%
 										</span>{" "}
 										from last month
 									</p>
 								</CardContent>
 							</Card>
-							<Card>
-								<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-									<CardTitle className="text-sm font-medium">
+							<Card className="overflow-hidden">
+								<CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 sm:pb-2">
+									<CardTitle className="text-xs sm:text-sm font-medium">
 										Monthly Expenses
 									</CardTitle>
-									<ArrowDownIcon className="h-4 w-4 text-muted-foreground" />
+									<ArrowDownIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
 								</CardHeader>
-								<CardContent>
-									<div className="text-2xl font-bold">$3,045.50</div>
-									<p className="text-xs text-muted-foreground">
+								<CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+									<div className="text-base sm:text-xl md:text-2xl font-bold">
+										$3,045.50
+									</div>
+									<p className="text-[10px] sm:text-xs text-muted-foreground">
 										<span className="text-rose-500 flex items-center">
-											<ArrowUpIcon className="mr-1 h-4 w-4" />
+											<ArrowUpIcon className="mr-0.5 h-3 w-3 sm:mr-1 sm:h-4 sm:w-4" />
 											+5.1%
 										</span>{" "}
 										from last month
 									</p>
 								</CardContent>
 							</Card>
-							<Card>
-								<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-									<CardTitle className="text-sm font-medium">
+							<Card className="overflow-hidden">
+								<CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 sm:pb-2">
+									<CardTitle className="text-xs sm:text-sm font-medium">
 										Savings Rate
 									</CardTitle>
-									<PieChartIcon className="h-4 w-4 text-muted-foreground" />
+									<PieChartIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
 								</CardHeader>
-								<CardContent>
-									<div className="text-2xl font-bold">41.8%</div>
-									<p className="text-xs text-muted-foreground">
+								<CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+									<div className="text-base sm:text-xl md:text-2xl font-bold">
+										41.8%
+									</div>
+									<p className="text-[10px] sm:text-xs text-muted-foreground">
 										<span className="text-emerald-500 flex items-center">
-											<ArrowUpIcon className="mr-1 h-4 w-4" />
+											<ArrowUpIcon className="mr-0.5 h-3 w-3 sm:mr-1 sm:h-4 sm:w-4" />
 											+8.2%
 										</span>{" "}
 										from last month
@@ -457,87 +484,131 @@ export default function Dashboard() {
 
 						{/* Charts Section */}
 						<Tabs defaultValue="overview" className="space-y-4">
-							<TabsList>
-								<TabsTrigger value="overview">Overview</TabsTrigger>
-								<TabsTrigger value="analytics">Analytics</TabsTrigger>
-								<TabsTrigger value="reports">Reports</TabsTrigger>
-								<TabsTrigger value="notifications">Notifications</TabsTrigger>
-							</TabsList>
+							<div className="overflow-x-auto -mx-2 px-2">
+								<TabsList className="flex w-full justify-start sm:justify-center">
+									<TabsTrigger value="overview" className="text-xs sm:text-sm">
+										Overview
+									</TabsTrigger>
+									<TabsTrigger value="analytics" className="text-xs sm:text-sm">
+										Analytics
+									</TabsTrigger>
+									<TabsTrigger value="reports" className="text-xs sm:text-sm">
+										Reports
+									</TabsTrigger>
+									<TabsTrigger
+										value="notifications"
+										className="text-xs sm:text-sm"
+									>
+										Notifications
+									</TabsTrigger>
+								</TabsList>
+							</div>
 							<TabsContent value="overview" className="space-y-4">
 								<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
 									{/* Monthly Expenses Chart */}
 									<Card className="lg:col-span-4">
-										<CardHeader>
-											<CardTitle>Monthly Expenses</CardTitle>
-											<CardDescription>
+										<CardHeader className="p-3 sm:p-6">
+											<CardTitle className="text-sm sm:text-base">
+												Monthly Expenses
+											</CardTitle>
+											<CardDescription className="text-xs">
 												Your expense trend over the past 12 months
 											</CardDescription>
 										</CardHeader>
-										{/* <CardContent className="h-[300px]">
-											<ChartContainer
-												data={monthlyExpensesData}
-												xAxisKey="name"
-												yAxisWidth={65}
-												className="h-[300px]"
-											>
-												<ChartTooltip>
-													<ChartTooltipContent />
-												</ChartTooltip>
-												<ChartGrid horizontal vertical />
-												<ChartYAxis />
-												<ChartXAxis />
-												<ChartArea
-													dataKey="value"
-													fill="url(#gradient)"
-													stroke="hsl(var(--primary))"
-													fillOpacity={0.2}
-													strokeWidth={2}
+										<CardContent className="p-3 pt-0 sm:p-6 sm:pt-0 h-[200px] sm:h-[250px] md:h-[300px]">
+											<div className="h-full w-full">
+												<Line
+													data={{
+														labels: monthlyExpensesData.map(
+															(item) => item.name
+														),
+														datasets: [
+															{
+																label: "Monthly Expenses",
+																data: monthlyExpensesData.map(
+																	(item) => item.value
+																),
+																fill: true,
+																backgroundColor: "rgba(59, 130, 246, 0.2)",
+																borderColor: "rgba(59, 130, 246, 1)",
+																tension: 0.4,
+															},
+														],
+													}}
+													options={{
+														responsive: true,
+														maintainAspectRatio: false,
+														plugins: {
+															legend: {
+																display: false,
+															},
+															tooltip: {
+																mode: "index",
+																intersect: false,
+																bodyFont: {
+																	size: 10,
+																},
+																titleFont: {
+																	size: 10,
+																},
+															},
+														},
+														scales: {
+															y: {
+																beginAtZero: true,
+																grid: {
+																	color: "rgba(0, 0, 0, 0.1)",
+																},
+																ticks: {
+																	font: {
+																		size: 9,
+																	},
+																},
+															},
+															x: {
+																grid: {
+																	display: false,
+																},
+																ticks: {
+																	font: {
+																		size: 9,
+																	},
+																	maxRotation: 45,
+																	minRotation: 45,
+																},
+															},
+														},
+													}}
 												/>
-												<defs>
-													<linearGradient
-														id="gradient"
-														x1="0"
-														y1="0"
-														x2="0"
-														y2="1"
-													>
-														<stop
-															offset="0%"
-															stopColor="hsl(var(--primary))"
-															stopOpacity={0.4}
-														/>
-														<stop
-															offset="100%"
-															stopColor="hsl(var(--primary))"
-															stopOpacity={0}
-														/>
-													</linearGradient>
-												</defs>
-											</ChartContainer>
-										</CardContent> */}
+											</div>
+										</CardContent>
 									</Card>
 
 									{/* Asset Allocation */}
 									<Card className="lg:col-span-3">
-										<CardHeader>
-											<CardTitle>Asset Allocation</CardTitle>
-											<CardDescription>
+										<CardHeader className="p-3 sm:p-6">
+											<CardTitle className="text-sm sm:text-base">
+												Asset Allocation
+											</CardTitle>
+											<CardDescription className="text-xs">
 												Your current investment portfolio
 											</CardDescription>
 										</CardHeader>
-										<CardContent>
-											<div className="space-y-4">
+										<CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+											<div className="space-y-3 sm:space-y-4">
 												{assetAllocationData.map((item) => (
 													<div key={item.name} className="flex items-center">
-														<div className="w-1/3 font-medium">{item.name}</div>
+														<div className="w-1/3 font-medium text-xs sm:text-sm">
+															{item.name}
+														</div>
 														<div className="w-2/3 flex items-center gap-2">
-															<div className="w-full bg-muted rounded-full h-2.5">
+															<div className="w-full bg-muted rounded-full h-1.5 sm:h-2.5">
 																<div
-																	className="bg-primary h-2.5 rounded-full"
+																	className="bg-primary h-1.5 sm:h-2.5 rounded-full"
 																	style={{ width: `${item.value}%` }}
 																></div>
 															</div>
-															<span className="text-sm font-medium">
+															<span className="text-xs sm:text-sm font-medium">
 																{item.value}%
 															</span>
 														</div>
@@ -550,116 +621,185 @@ export default function Dashboard() {
 
 								{/* Income vs Expenses Chart */}
 								<Card>
-									<CardHeader>
-										<CardTitle>Income vs Expenses</CardTitle>
-										<CardDescription>
+									<CardHeader className="p-3 sm:p-6">
+										<CardTitle className="text-sm sm:text-base">
+											Income vs Expenses
+										</CardTitle>
+										<CardDescription className="text-xs">
 											Comparison of your income and expenses for the past 6
 											months
 										</CardDescription>
 									</CardHeader>
-									{/* <CardContent className="h-[300px]">
-										<ChartContainer
-											data={incomeVsExpensesData}
-											xAxisKey="name"
-											yAxisWidth={65}
-											className="h-[300px]"
-										>
-											<ChartTooltip>
-												<ChartTooltipContent />
-											</ChartTooltip>
-											<ChartLegend className="mb-4">
-												<ChartLegendItem
-													name="Income"
-													color="hsl(var(--primary))"
-												/>
-												<ChartLegendItem
-													name="Expenses"
-													color="hsl(var(--destructive))"
-												/>
-											</ChartLegend>
-											<ChartGrid horizontal vertical />
-											<ChartYAxis />
-											<ChartXAxis />
-											<ChartBar
-												dataKey="income"
-												fill="hsl(var(--primary))"
-												radius={4}
-												className="fill-primary"
+									<CardContent className="p-3 pt-0 sm:p-6 sm:pt-0 h-[200px] sm:h-[250px] md:h-[300px]">
+										<div className="flex items-center gap-4 mb-2 sm:mb-4">
+											<div className="flex items-center gap-1 sm:gap-2">
+												<div className="h-2 w-2 sm:h-3 sm:w-3 rounded-sm bg-primary"></div>
+												<span className="text-xs sm:text-sm font-medium">
+													Income
+												</span>
+											</div>
+											<div className="flex items-center gap-1 sm:gap-2">
+												<div className="h-2 w-2 sm:h-3 sm:w-3 rounded-sm bg-destructive"></div>
+												<span className="text-xs sm:text-sm font-medium">
+													Expenses
+												</span>
+											</div>
+										</div>
+										<div className="h-[170px] sm:h-[220px] md:h-[250px]">
+											<Bar
+												data={{
+													labels: incomeVsExpensesData.map((item) => item.name),
+													datasets: [
+														{
+															label: "Income",
+															data: incomeVsExpensesData.map(
+																(item) => item.income
+															),
+															backgroundColor: "hsl(var(--primary))",
+															borderRadius: 4,
+														},
+														{
+															label: "Expenses",
+															data: incomeVsExpensesData.map(
+																(item) => item.expenses
+															),
+															backgroundColor: "hsl(var(--destructive))",
+															borderRadius: 4,
+														},
+													],
+												}}
+												options={{
+													responsive: true,
+													maintainAspectRatio: false,
+													plugins: {
+														legend: {
+															display: false,
+														},
+														tooltip: {
+															mode: "index",
+															intersect: false,
+															bodyFont: {
+																size: 10,
+															},
+															titleFont: {
+																size: 10,
+															},
+														},
+													},
+													scales: {
+														y: {
+															beginAtZero: true,
+															grid: {
+																color: "rgba(0, 0, 0, 0.1)",
+															},
+															ticks: {
+																font: {
+																	size: 9,
+																},
+															},
+														},
+														x: {
+															grid: {
+																display: false,
+															},
+															ticks: {
+																font: {
+																	size: 9,
+																},
+															},
+														},
+													},
+												}}
 											/>
-											<ChartBar
-												dataKey="expenses"
-												fill="hsl(var(--destructive))"
-												radius={4}
-												className="fill-destructive"
-											/>
-										</ChartContainer>
-									</CardContent> */}
+										</div>
+									</CardContent>
 								</Card>
 
 								{/* Recent Transactions */}
 								<Card>
-									<CardHeader>
-										<CardTitle>Recent Transactions</CardTitle>
-										<CardDescription>
+									<CardHeader className="p-3 sm:p-6">
+										<CardTitle className="text-sm sm:text-base">
+											Recent Transactions
+										</CardTitle>
+										<CardDescription className="text-xs">
 											Your recent financial activities
 										</CardDescription>
 									</CardHeader>
-									<CardContent>
-										<Table>
-											<TableHeader>
-												<TableRow>
-													<TableHead>Description</TableHead>
-													<TableHead>Category</TableHead>
-													<TableHead>Date</TableHead>
-													<TableHead className="text-right">Amount</TableHead>
-													<TableHead className="text-right">Status</TableHead>
-												</TableRow>
-											</TableHeader>
-											<TableBody>
-												{recentTransactions.map((transaction) => (
-													<TableRow key={transaction.id}>
-														<TableCell className="font-medium">
-															{transaction.description}
-														</TableCell>
-														<TableCell>{transaction.category}</TableCell>
-														<TableCell>{transaction.date}</TableCell>
-														<TableCell
-															className={`text-right ${
-																transaction.amount > 0 ? "text-emerald-500" : ""
-															}`}
-														>
-															{transaction.amount > 0 ? "+" : ""}$
-															{Math.abs(transaction.amount).toFixed(2)}
-														</TableCell>
-														<TableCell className="text-right">
-															<Badge
-																variant={
-																	transaction.status === "Completed"
-																		? "outline"
-																		: "secondary"
-																}
-															>
-																{transaction.status}
-															</Badge>
-														</TableCell>
+									<CardContent className="p-0 sm:p-6 sm:pt-0">
+										<div className="overflow-x-auto">
+											<Table>
+												<TableHeader>
+													<TableRow>
+														<TableHead className="text-xs">
+															Description
+														</TableHead>
+														<TableHead className="text-xs hidden sm:table-cell">
+															Category
+														</TableHead>
+														<TableHead className="text-xs">Date</TableHead>
+														<TableHead className="text-xs text-right">
+															Amount
+														</TableHead>
+														<TableHead className="text-xs text-right">
+															Status
+														</TableHead>
 													</TableRow>
-												))}
-											</TableBody>
-										</Table>
+												</TableHeader>
+												<TableBody>
+													{recentTransactions.map((transaction) => (
+														<TableRow key={transaction.id}>
+															<TableCell className="font-medium text-xs p-2 sm:p-4">
+																{transaction.description}
+															</TableCell>
+															<TableCell className="text-xs p-2 sm:p-4 hidden sm:table-cell">
+																{transaction.category}
+															</TableCell>
+															<TableCell className="text-xs p-2 sm:p-4">
+																{transaction.date}
+															</TableCell>
+															<TableCell
+																className={`text-xs p-2 sm:p-4 text-right ${
+																	transaction.amount > 0
+																		? "text-emerald-500"
+																		: ""
+																}`}
+															>
+																{transaction.amount > 0 ? "+" : ""}$
+																{Math.abs(transaction.amount).toFixed(2)}
+															</TableCell>
+															<TableCell className="text-xs p-2 sm:p-4 text-right">
+																<Badge
+																	variant={
+																		transaction.status === "Completed"
+																			? "outline"
+																			: "secondary"
+																	}
+																	className="text-[10px] sm:text-xs px-1 py-0 sm:px-2 sm:py-0.5"
+																>
+																	{transaction.status}
+																</Badge>
+															</TableCell>
+														</TableRow>
+													))}
+												</TableBody>
+											</Table>
+										</div>
 									</CardContent>
 								</Card>
 							</TabsContent>
 							<TabsContent value="analytics" className="space-y-4">
 								<Card>
-									<CardHeader>
-										<CardTitle>Advanced Analytics</CardTitle>
-										<CardDescription>
+									<CardHeader className="p-3 sm:p-6">
+										<CardTitle className="text-sm sm:text-base">
+											Advanced Analytics
+										</CardTitle>
+										<CardDescription className="text-xs">
 											Detailed analysis of your financial data
 										</CardDescription>
 									</CardHeader>
-									<CardContent>
-										<div className="flex items-center justify-center h-40 border rounded-md">
-											<p className="text-muted-foreground">
+									<CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+										<div className="flex items-center justify-center h-32 sm:h-40 border rounded-md">
+											<p className="text-xs sm:text-sm text-muted-foreground">
 												Analytics content will appear here
 											</p>
 										</div>
@@ -668,15 +808,17 @@ export default function Dashboard() {
 							</TabsContent>
 							<TabsContent value="reports" className="space-y-4">
 								<Card>
-									<CardHeader>
-										<CardTitle>Financial Reports</CardTitle>
-										<CardDescription>
+									<CardHeader className="p-3 sm:p-6">
+										<CardTitle className="text-sm sm:text-base">
+											Financial Reports
+										</CardTitle>
+										<CardDescription className="text-xs">
 											Generate and view your financial reports
 										</CardDescription>
 									</CardHeader>
-									<CardContent>
-										<div className="flex items-center justify-center h-40 border rounded-md">
-											<p className="text-muted-foreground">
+									<CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+										<div className="flex items-center justify-center h-32 sm:h-40 border rounded-md">
+											<p className="text-xs sm:text-sm text-muted-foreground">
 												Reports content will appear here
 											</p>
 										</div>
@@ -685,15 +827,17 @@ export default function Dashboard() {
 							</TabsContent>
 							<TabsContent value="notifications" className="space-y-4">
 								<Card>
-									<CardHeader>
-										<CardTitle>Notifications</CardTitle>
-										<CardDescription>
+									<CardHeader className="p-3 sm:p-6">
+										<CardTitle className="text-sm sm:text-base">
+											Notifications
+										</CardTitle>
+										<CardDescription className="text-xs">
 											Your financial alerts and notifications
 										</CardDescription>
 									</CardHeader>
-									<CardContent>
-										<div className="flex items-center justify-center h-40 border rounded-md">
-											<p className="text-muted-foreground">
+									<CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+										<div className="flex items-center justify-center h-32 sm:h-40 border rounded-md">
+											<p className="text-xs sm:text-sm text-muted-foreground">
 												Notifications content will appear here
 											</p>
 										</div>
