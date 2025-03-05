@@ -32,7 +32,7 @@ ChartJS.register(
 	Filler
 );
 
-export default function Dashboard() {
+export default function CustomerDashboard() {
 	const [isDarkMode, setIsDarkMode] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 

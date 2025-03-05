@@ -5,7 +5,7 @@ import { Eye, EyeOff, Info, Mail, Lock, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
+import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -46,53 +46,30 @@ export default function LoginForm() {
 	async function formSubmit(data: LoginProps) {
 		setLoading(true);
 		try {
-			const res = await fetch(`${baseUrl}/api/v1/login`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(data),
+			setLoading(true);
+			console.log("Attempting to sign in with credentials:", data);
+			const loginData = await signIn("credentials", {
+				...data,
+				redirect: false,
 			});
-			if (res.status === 403) {
+			console.log("SignIn response:", loginData);
+			if (loginData?.error) {
 				setLoading(false);
-				setError("Wrong Credentials");
-				toast.error("You Entered Wrong Credentials");
-			} else if (res.status === 201) {
-				setLoading(false);
-				toast.success("You are Welcome🎉");
+				toast.error("Sign-in error: Check your credentials");
+				setShowNotification(true);
+			} else {
+				// Sign-in was successful
+				setShowNotification(false);
 				reset();
+				setLoading(false);
+				toast.success("Login Successful");
 				router.push("/");
-				router.refresh();
 			}
 		} catch (error) {
-			console.log(error);
 			setLoading(false);
+			console.error("Network Error:", error);
+			toast.error("Its seems something is wrong with your Network");
 		}
-		// try {
-		// 	setLoading(true);
-		// 	console.log("Attempting to sign in with credentials:", data);
-		// 	const loginData = await signIn("credentials", {
-		// 		...data,
-		// 		redirect: false,
-		// 	});
-		// 	console.log("SignIn response:", loginData);
-		// 	if (loginData?.error) {
-		// 		setLoading(false);
-		// 		toast.error("Sign-in error: Check your credentials");
-		// 		setShowNotification(true);
-		// 	} else {
-		// 		// Sign-in was successful
-		// 		setShowNotification(false);
-		// 		reset();
-		// 		setLoading(false);
-		// 		toast.success("Login Successful");
-		// 		router.push("/");
-		// 	}
-		// } catch (error) {
-		// 	setLoading(false);
-		// 	console.error("Network Error:", error);
-		// 	toast.error("Its seems something is wrong with your Network");
-		// }
 	}
 
 	return (

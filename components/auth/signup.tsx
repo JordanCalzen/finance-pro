@@ -25,6 +25,7 @@ export type SignupProps = {
 	username: string;
 	email: string;
 	password: string;
+	image: string;
 	phone: string;
 };
 
@@ -55,6 +56,7 @@ export default function SignupForm() {
 	};
 
 	async function formSubmit(data: SignupProps) {
+		data.image = "/placeholder";
 		setLoading(true);
 		try {
 			const res = await fetch(`${baseUrl}/api/v1/users`, {

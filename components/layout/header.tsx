@@ -20,6 +20,7 @@ import {
 	UserIcon,
 	SettingsIcon,
 } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 interface HeaderProps {
 	isDarkMode: boolean;
@@ -100,7 +101,9 @@ export function Header({
 								Settings
 							</DropdownMenuItem>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem>Log out</DropdownMenuItem>
+							<DropdownMenuItem onClick={() => signOut()}>
+								Log out
+							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</div>
