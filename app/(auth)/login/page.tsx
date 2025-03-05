@@ -2,12 +2,11 @@
 
 import { BackgroundParticles } from "@/components/ui/background-particles";
 import LoginForm from "@/components/auth/login-form";
-import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
+// import { useTheme } from "next-themes";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export default function ExamplePage() {
-	const { theme, setTheme } = useTheme();
+	// const { theme, setTheme } = useTheme();
 
 	return (
 		<BackgroundParticles containerClassName="min-h-screen">
@@ -15,13 +14,7 @@ export default function ExamplePage() {
 				<div className="flex flex-col items-center justify-center space-y-8 py-10">
 					<div className="flex items-center justify-center gap-10">
 						<h1 className="text-4xl font-bold text-center">Welcome🎉</h1>
-						<Button
-							variant="outline"
-							onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-							className="mt-4"
-						>
-							{theme === "dark" ? <Sun /> : <Moon />}
-						</Button>
+						<ModeToggle />
 					</div>
 
 					<div className="gap-2 mt-2 w-full max-w-4xl">

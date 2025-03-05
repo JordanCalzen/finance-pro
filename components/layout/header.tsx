@@ -21,18 +21,13 @@ import {
 	SettingsIcon,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { ModeToggle } from "../mode-toggle";
 
 interface HeaderProps {
-	isDarkMode: boolean;
-	toggleDarkMode: () => void;
 	toggleMobileMenu: () => void;
 }
 
-export function Header({
-	isDarkMode,
-	toggleDarkMode,
-	toggleMobileMenu,
-}: HeaderProps) {
+export function Header({ toggleMobileMenu }: HeaderProps) {
 	return (
 		<header className="sticky top-0 z-40 border-b bg-background">
 			<div className="flex h-12 sm:h-14 items-center justify-between px-2 sm:px-4 md:px-6">
@@ -56,19 +51,7 @@ export function Header({
 					</div>
 				</div>
 				<div className="flex items-center gap-1 sm:gap-2">
-					<Button
-						variant="ghost"
-						size="icon"
-						className="h-8 w-8"
-						onClick={toggleDarkMode}
-					>
-						{isDarkMode ? (
-							<SunIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-						) : (
-							<MoonIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-						)}
-						<span className="sr-only">Toggle theme</span>
-					</Button>
+					<ModeToggle />
 					<Button variant="ghost" size="icon" className="h-8 w-8">
 						<BellIcon className="h-4 w-4 sm:h-5 sm:w-5" />
 						<span className="sr-only">Notifications</span>

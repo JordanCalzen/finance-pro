@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Sidebar } from "@/components/layout/sidebar";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 import { Header } from "@/components/layout/header";
@@ -33,22 +33,7 @@ ChartJS.register(
 );
 
 export default function CustomerDashboard() {
-	const [isDarkMode, setIsDarkMode] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-	// Toggle dark mode
-	const toggleDarkMode = () => {
-		setIsDarkMode(!isDarkMode);
-	};
-
-	// Apply dark mode class to html element
-	useEffect(() => {
-		if (isDarkMode) {
-			document.documentElement.classList.add("dark");
-		} else {
-			document.documentElement.classList.remove("dark");
-		}
-	}, [isDarkMode]);
 
 	// Sample data for charts
 	const monthlyExpensesData = [
@@ -135,7 +120,7 @@ export default function CustomerDashboard() {
 	];
 
 	return (
-		<div className={`min-h-screen bg-background ${isDarkMode ? "dark" : ""}`}>
+		<div className={`min-h-screen bg-background`}>
 			{/* Mobile Menu */}
 			<MobileMenu
 				isOpen={isMobileMenuOpen}
@@ -149,11 +134,7 @@ export default function CustomerDashboard() {
 				{/* Main Content */}
 				<main className="flex-1 lg:pl-64">
 					{/* Header */}
-					<Header
-						isDarkMode={isDarkMode}
-						toggleDarkMode={toggleDarkMode}
-						toggleMobileMenu={() => setIsMobileMenuOpen(true)}
-					/>
+					<Header toggleMobileMenu={() => setIsMobileMenuOpen(true)} />
 
 					{/* Dashboard Content */}
 					<div className="p-2 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
