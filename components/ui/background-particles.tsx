@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useEffect, useState, useRef } from "react";
@@ -39,14 +38,10 @@ export function BackgroundParticles({
 
 		const resizeCanvas = () => {
 			const { width, height } = canvas.getBoundingClientRect();
-			if (canvas.width !== width || canvas.height !== height) {
-				const { devicePixelRatio: ratio = 1 } = window;
-				canvas.width = width * ratio;
-				canvas.height = height * ratio;
-				ctx.scale(ratio, ratio);
-				return true;
-			}
-			return false;
+			const { devicePixelRatio: ratio = 1 } = window;
+			canvas.width = width * ratio;
+			canvas.height = height * ratio;
+			ctx.scale(ratio, ratio);
 		};
 
 		class Particle {
@@ -81,6 +76,7 @@ export function BackgroundParticles({
 			}
 
 			draw() {
+				if (!ctx) return;
 				ctx.fillStyle = this.color;
 				ctx.beginPath();
 				ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -96,16 +92,16 @@ export function BackgroundParticles({
 		};
 
 		const animate = () => {
+			if (!ctx) return;
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-			for (let i = 0; i < particles.length; i++) {
-				particles[i].update();
-				particles[i].draw();
+			particles.forEach((particle, i) => {
+				particle.update();
+				particle.draw();
 
-				// Connect particles with lines
-				for (let j = i; j < particles.length; j++) {
-					const dx = particles[i].x - particles[j].x;
-					const dy = particles[i].y - particles[j].y;
+				for (let j = i + 1; j < particles.length; j++) {
+					const dx = particle.x - particles[j].x;
+					const dy = particle.y - particles[j].y;
 					const distance = Math.sqrt(dx * dx + dy * dy);
 
 					if (distance < 100) {
@@ -115,12 +111,12 @@ export function BackgroundParticles({
 								? `rgba(168, 85, 247, ${0.2 * (1 - distance / 100)})`
 								: `rgba(168, 85, 247, ${0.1 * (1 - distance / 100)})`;
 						ctx.lineWidth = 0.5;
-						ctx.moveTo(particles[i].x, particles[i].y);
+						ctx.moveTo(particle.x, particle.y);
 						ctx.lineTo(particles[j].x, particles[j].y);
 						ctx.stroke();
 					}
 				}
-			}
+			});
 
 			animationFrameId = requestAnimationFrame(animate);
 		};
@@ -129,15 +125,15 @@ export function BackgroundParticles({
 		init();
 		animate();
 
-		window.addEventListener("resize", () => {
-			if (resizeCanvas()) {
-				init();
-			}
-		});
+		const handleResize = () => {
+			resizeCanvas();
+			init();
+		};
+		window.addEventListener("resize", handleResize);
 
 		return () => {
 			cancelAnimationFrame(animationFrameId);
-			window.removeEventListener("resize", resizeCanvas);
+			window.removeEventListener("resize", handleResize);
 		};
 	}, [mounted, theme, particleCount]);
 
