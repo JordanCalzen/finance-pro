@@ -29,7 +29,7 @@ interface HeaderProps {
 
 export function Header({ toggleMobileMenu }: HeaderProps) {
 	return (
-		<header className="sticky top-0 z-40 border-b bg-background">
+		<header className=" border-b bg-background">
 			<div className="flex h-12 sm:h-14 items-center justify-between px-2 sm:px-4 md:px-6">
 				<div className="flex items-center gap-1 sm:gap-2">
 					<Button

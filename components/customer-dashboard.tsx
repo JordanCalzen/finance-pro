@@ -1,9 +1,4 @@
 "use client";
-
-import { useState } from "react";
-import { Sidebar } from "@/components/layout/sidebar";
-import { MobileMenu } from "@/components/layout/mobile-menu";
-import { Header } from "@/components/layout/header";
 import { OverviewCards } from "@/components/dashboard/overview-cards";
 import { DashboardTabs } from "@/components/dashboard/dashboard-tabs";
 import {
@@ -33,8 +28,6 @@ ChartJS.register(
 );
 
 export default function CustomerDashboard() {
-	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
 	// Sample data for charts
 	const monthlyExpensesData = [
 		{ name: "Jan", value: 2400 },
@@ -120,45 +113,28 @@ export default function CustomerDashboard() {
 	];
 
 	return (
-		<div className={`min-h-screen bg-background`}>
-			{/* Mobile Menu */}
-			<MobileMenu
-				isOpen={isMobileMenuOpen}
-				onClose={() => setIsMobileMenuOpen(false)}
-			/>
+		<div>
+			{/* Dashboard Content */}
+			<div className="p-2 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
+				<div className="flex flex-col gap-1 sm:gap-2">
+					<h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">
+						Financial Dashboard
+					</h1>
+					<p className="text-xs sm:text-sm text-muted-foreground">
+						Welcome back, John! Here's an overview of your finances.
+					</p>
+				</div>
 
-			<div className="flex min-h-screen">
-				{/* Sidebar - Desktop */}
-				<Sidebar />
+				{/* Financial Overview Cards */}
+				<OverviewCards />
 
-				{/* Main Content */}
-				<main className="flex-1 lg:pl-64">
-					{/* Header */}
-					<Header toggleMobileMenu={() => setIsMobileMenuOpen(true)} />
-
-					{/* Dashboard Content */}
-					<div className="p-2 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
-						<div className="flex flex-col gap-1 sm:gap-2">
-							<h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">
-								Financial Dashboard
-							</h1>
-							<p className="text-xs sm:text-sm text-muted-foreground">
-								Welcome back, John! Here's an overview of your finances.
-							</p>
-						</div>
-
-						{/* Financial Overview Cards */}
-						<OverviewCards />
-
-						{/* Charts Section */}
-						<DashboardTabs
-							monthlyExpensesData={monthlyExpensesData}
-							incomeVsExpensesData={incomeVsExpensesData}
-							assetAllocationData={assetAllocationData}
-							recentTransactions={recentTransactions}
-						/>
-					</div>
-				</main>
+				{/* Charts Section */}
+				<DashboardTabs
+					monthlyExpensesData={monthlyExpensesData}
+					incomeVsExpensesData={incomeVsExpensesData}
+					assetAllocationData={assetAllocationData}
+					recentTransactions={recentTransactions}
+				/>
 			</div>
 		</div>
 	);
