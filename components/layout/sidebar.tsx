@@ -5,11 +5,26 @@ import {
 	HomeIcon,
 	LineChartIcon,
 	CreditCardIcon,
-	PieChartIcon,
 	UsersIcon,
 	SettingsIcon,
+	HandCoins,
+	Wallet,
 } from "lucide-react";
+import { PiHandWithdrawDuotone } from "react-icons/pi";
+import { RiLuggageDepositLine } from "react-icons/ri";
 import Link from "next/link";
+
+const navItems = [
+	{ href: "/", label: "Home", icon: HomeIcon },
+	{ href: "#", label: "Analytics", icon: LineChartIcon },
+	{ href: "#", label: "Transactions", icon: CreditCardIcon },
+	{ href: "#", label: "Savings", icon: Wallet },
+	{ href: "/withdraw", label: "Withdraw", icon: PiHandWithdrawDuotone },
+	{ href: "/deposits", label: "Deposits", icon: RiLuggageDepositLine },
+	{ href: "/loans", label: "Loans", icon: HandCoins },
+	{ href: "#", label: "Accounts", icon: UsersIcon },
+	{ href: "#", label: "Settings", icon: SettingsIcon },
+];
 
 export function Sidebar() {
 	return (
@@ -18,48 +33,19 @@ export function Sidebar() {
 				<span className="text-xl font-bold">FinancePro</span>
 			</div>
 			<nav className="flex-1 space-y-2 p-4">
-				<Button variant="secondary" className="w-full justify-start" asChild>
-					<Link href="/" className="flex items-center">
-						<HomeIcon className="mr-2 h-5 w-5" />
-						Dashboard
-					</Link>
-				</Button>
-				<Button variant="ghost" className="w-full justify-start" asChild>
-					<Link href="#" className="flex items-center">
-						<LineChartIcon className="mr-2 h-5 w-5" />
-						Analytics
-					</Link>
-				</Button>
-				<Button variant="ghost" className="w-full justify-start" asChild>
-					<Link href="#" className="flex items-center">
-						<CreditCardIcon className="mr-2 h-5 w-5" />
-						Transactions
-					</Link>
-				</Button>
-				<Button variant="ghost" className="w-full justify-start" asChild>
-					<Link href="" className="flex items-center">
-						<PieChartIcon className="mr-2 h-5 w-5" />
-						Investments
-					</Link>
-				</Button>
-				<Button variant="ghost" className="w-full justify-start" asChild>
-					<Link href="/withdraw" className="flex items-center">
-						<PieChartIcon className="mr-2 h-5 w-5" />
-						Withdraw
-					</Link>
-				</Button>
-				<Button variant="ghost" className="w-full justify-start" asChild>
-					<Link href="#" className="flex items-center">
-						<UsersIcon className="mr-2 h-5 w-5" />
-						Accounts
-					</Link>
-				</Button>
-				<Button variant="ghost" className="w-full justify-start" asChild>
-					<Link href="#" className="flex items-center">
-						<SettingsIcon className="mr-2 h-5 w-5" />
-						Settings
-					</Link>
-				</Button>
+				{navItems.map(({ href, label, icon: Icon }) => (
+					<Button
+						key={label}
+						variant={href === "/" ? "secondary" : "ghost"}
+						className="w-full justify-start"
+						asChild
+					>
+						<Link href={href} className="flex items-center">
+							<Icon className="mr-2 h-5 w-5" />
+							{label}
+						</Link>
+					</Button>
+				))}
 			</nav>
 		</aside>
 	);

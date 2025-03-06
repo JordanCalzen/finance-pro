@@ -11,36 +11,17 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-	MenuIcon,
-	SearchIcon,
-	SunIcon,
-	MoonIcon,
-	BellIcon,
-	UserIcon,
-	SettingsIcon,
-} from "lucide-react";
+import { SearchIcon, BellIcon, UserIcon, SettingsIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { ModeToggle } from "../mode-toggle";
+import { MobileNav } from "../mobileNav";
 
-interface HeaderProps {
-	toggleMobileMenu: () => void;
-}
-
-export function Header({ toggleMobileMenu }: HeaderProps) {
+export function Header() {
 	return (
 		<header className=" border-b bg-background">
 			<div className="flex h-12 sm:h-14 items-center justify-between px-2 sm:px-4 md:px-6">
 				<div className="flex items-center gap-1 sm:gap-2">
-					<Button
-						variant="ghost"
-						size="icon"
-						className="h-8 w-8 lg:hidden"
-						onClick={toggleMobileMenu}
-					>
-						<MenuIcon className="h-5 w-5" />
-						<span className="sr-only">Toggle Menu</span>
-					</Button>
+					<MobileNav />
 					<div className="relative w-full max-w-[120px] sm:max-w-none sm:w-64 lg:w-80">
 						<SearchIcon className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
 						<Input

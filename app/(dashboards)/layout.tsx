@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import React, { ReactNode } from "react";
 import { Sidebar } from "@/components/layout/sidebar";
 import Mobile from "@/components/mobile";
-import HeaderMobile from "@/components/header-mobile";
+import { Header } from "@/components/layout/header";
 
 export default async function DashboardLayout({
 	children,
@@ -27,7 +27,7 @@ export default async function DashboardLayout({
 				<main className="flex-1 lg:pl-64">
 					{/* Header */}
 					<div className="sticky top-0">
-						<HeaderMobile />
+						<Header />
 					</div>
 
 					{children}
