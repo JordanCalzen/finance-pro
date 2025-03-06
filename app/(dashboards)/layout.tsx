@@ -26,7 +26,7 @@ export default async function DashboardLayout({
 				{/* Main Content */}
 				<main className="flex-1 lg:pl-64">
 					{/* Header */}
-					<div className="sticky top-0 z-40">
+					<div className="sticky top-0">
 						<HeaderMobile />
 					</div>
 

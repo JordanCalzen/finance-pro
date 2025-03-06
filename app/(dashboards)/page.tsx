@@ -1,10 +1,10 @@
-import CustomerDashboard from "@/components/customer-dashboard";
+import DashboardContent from "@/components/customer/dashboard-content";
 import React from "react";
 
 export default function Home() {
 	return (
 		<div>
-			<CustomerDashboard />
+			<DashboardContent />
 		</div>
 	);
 }
