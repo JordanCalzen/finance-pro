@@ -78,6 +78,7 @@ export const authOptions: NextAuthOptions = {
 						id: existingUser.id,
 						name: existingUser.username,
 						email: existingUser.email,
+						role: existingUser.role,
 					};
 					//
 					console.log("User Compiled");
@@ -104,6 +105,7 @@ export const authOptions: NextAuthOptions = {
 				id: dbUser.id,
 				name: dbUser.username,
 				email: dbUser.email,
+				role: dbUser.role,
 			};
 		},
 		session({ session, token }) {
@@ -112,6 +114,7 @@ export const authOptions: NextAuthOptions = {
 				session.user.name = token.name;
 				session.user.email = token.email;
 				session.user.image = token.picture;
+				session.user.role = token.role;
 			}
 			return session;
 		},

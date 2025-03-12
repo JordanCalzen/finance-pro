@@ -16,7 +16,7 @@ const menuLinks = [
 	{ title: "Accounts", href: "/dashboard/accounts" },
 	{ title: "Transactions", href: "/dashboard/transactions" },
 	{ title: "Deposits", href: "/dashboard/deposits" },
-	{ title: "Withdrawals", href: "/dashboard/withdrawals" },
+	{ title: "Withdraw", href: "/dashboard/withdrawals" },
 	{ title: "Loans", href: "/dashboard/loans" },
 	{ title: "Savings", href: "/dashboard/savings" },
 	{ title: "Support", href: "/dashboard/support" },
@@ -30,7 +30,7 @@ export function MobileNav() {
 			<SheetTrigger asChild>
 				<Button
 					variant="ghost"
-					className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+					className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 lg:hidden"
 				>
 					<svg
 						strokeWidth="1.5"

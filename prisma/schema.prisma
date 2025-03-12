@@ -13,6 +13,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Account {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String  @db.ObjectId
+  type      String  // Example: "SAVINGS", "CHECKING", "LOAN"
+  status    String  @default("ACTIVE") // ACTIVE, CLOSED, SUSPENDED
+  balance   Float   @default(0.0)
+  currency  String  @default("UGX")
+
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TRANSFER
+}
+
+model Transaction {
+  id            String           @id @default(auto()) @map("_id") @db.ObjectId
+  accountId     String           @db.ObjectId
+  amount        Float
+  type          TransactionType
+  status        String           @default("PENDING") // PENDING, SUCCESS, FAILED
+  receiverId    String?          @db.ObjectId // Only used for transfers
+  description   String?
+
+  account       Account          @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  // receiver      User?            @relation(fields: [receiverId], references: [id], onDelete: SetNull)
+
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
 enum UserRole {
   USER
   ADMIN
@@ -29,16 +66,18 @@ model Session {
 
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  username          String
-  email         String   @unique
+  username      String
+  email         String    @unique
   emailVerified DateTime?
   image         String?
   role          UserRole  @default(USER)
   password      String
   phone         String
   sessions      Session[]
-  isVerfied     Boolean   @default(false)
-  // token         Int
+  isVerified    Boolean   @default(false) // Fixed typo in isVerfied
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  // receivedTransactions Transaction[] @relation("receiver")
 }

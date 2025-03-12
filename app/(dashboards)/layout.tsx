@@ -12,21 +12,23 @@ export default async function DashboardLayout({
 	children: ReactNode;
 }) {
 	const user = await getServerSession(authOptions);
+	const role = user?.user.role;
 	if (!user) {
 		redirect("/login");
 	}
+	// console.log(role);
 	return (
 		<div className={`min-h-screen bg-background`}>
 			{/* Mobile Menu */}
 			<Mobile />
 			<div className="flex min-h-screen">
 				{/* Sidebar - Desktop */}
-				<Sidebar />
+				<Sidebar role={role} />
 
 				{/* Main Content */}
 				<main className="flex-1 lg:pl-64">
 					{/* Header */}
-					<div className="sticky top-0">
+					<div className="sticky top-0 z-40">
 						<Header />
 					</div>
 

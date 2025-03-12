@@ -1,11 +1,12 @@
 "use client";
 
 import { BackgroundParticles } from "@/components/ui/background-particles";
-import LoginForm from "@/components/auth/login-form";
 // import { useTheme } from "next-themes";
+import SignupForm from "@/components/auth/signup";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Session } from "@prisma/client";
 
-export default function ExamplePage() {
+export default function SignupPage() {
 	// const { theme, setTheme } = useTheme();
 
 	return (
@@ -18,7 +19,7 @@ export default function ExamplePage() {
 					</div>
 
 					<div className="gap-2 mt-2 w-full max-w-4xl">
-						<LoginForm />
+						<SignupForm />
 					</div>
 				</div>
 			</div>
