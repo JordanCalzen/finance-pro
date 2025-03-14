@@ -20,7 +20,7 @@ export default function SignupPage() {
 			<div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent" />
 
 			{/* Dark Overlay for better contrast */}
-			<div className="absolute inset-0 bg-black/60" />
+			<div className="absolute inset-0 bg-black/40" />
 
 			{/* Content */}
 			<div className="relative z-10 flex flex-col items-center justify-center min-h-screen py-4">
