@@ -2,6 +2,7 @@ import { FormValues } from "@/components/account-profile-form";
 import { DepositValues } from "@/components/deposit-form";
 // import { authOptions } from "@/config/auth";
 import { db } from "@/prisma/db";
+import { QueriesDepositsResponse } from "@/types/type";
 // import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -68,7 +69,7 @@ export async function POST(request: NextRequest) {
 	}
 }
 
-export async function GET() {
+export async function GET(): Promise<NextResponse<QueriesDepositsResponse>> {
 	try {
 		const deposits = await db.deposit.findMany({
 			include: {
@@ -87,6 +88,7 @@ export async function GET() {
 		console.log(error);
 		return NextResponse.json(
 			{
+				message: "Failed",
 				data: null,
 				error: "something went wrong",
 			},

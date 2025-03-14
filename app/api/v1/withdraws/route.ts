@@ -1,5 +1,6 @@
 import { WithdrawalFormData } from "@/components/withdraw-form";
 import { db } from "@/prisma/db";
+import { QueriesWithdrawsResponse } from "@/types/type";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -73,7 +74,7 @@ export async function POST(request: NextRequest) {
 	}
 }
 
-export async function GET() {
+export async function GET(): Promise<NextResponse<QueriesWithdrawsResponse>> {
 	try {
 		const withdraws = await db.withdraw.findMany({
 			include: {
@@ -92,6 +93,7 @@ export async function GET() {
 		console.log(error);
 		return NextResponse.json(
 			{
+				message: "Failed",
 				data: null,
 				error: "something went wrong",
 			},

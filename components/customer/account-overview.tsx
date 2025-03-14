@@ -1,3 +1,5 @@
+"use client";
+import { useDeposits, useWithdraws } from "@/app/hooks/useAccounts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Account } from "@prisma/client";
 import {
@@ -22,6 +24,19 @@ function getAccountData() {
 
 export function AccountOverview({ account }: { account: Account }) {
 	const accountData = getAccountData();
+	const { deposits, isLoading, error } = useDeposits();
+	if (isLoading) {
+		<p>Loading...</p>;
+	}
+
+	const totalDeposits = Array.isArray(deposits)
+		? deposits.reduce((total, deposit) => total + deposit.amount, 0)
+		: 0;
+
+	const { withdraws } = useWithdraws();
+	const totalWithdrawals = Array.isArray(withdraws)
+		? withdraws.reduce((total, withdraw) => total + withdraw.amount, 0)
+		: 0;
 
 	return (
 		<>
@@ -49,7 +64,7 @@ export function AccountOverview({ account }: { account: Account }) {
 				<CardContent>
 					<div className="text-2xl font-bold">
 						{account.currency}
-						{accountData.totalDeposits.toLocaleString()}
+						{totalDeposits.toLocaleString()}
 					</div>
 					<p className="text-xs text-muted-foreground">Lifetime deposits</p>
 				</CardContent>
@@ -65,7 +80,7 @@ export function AccountOverview({ account }: { account: Account }) {
 				<CardContent>
 					<div className="text-2xl font-bold">
 						{account.currency}
-						{accountData.totalWithdrawals.toLocaleString()}
+						{totalWithdrawals.toLocaleString()}
 					</div>
 					<p className="text-xs text-muted-foreground">Lifetime withdrawals</p>
 				</CardContent>

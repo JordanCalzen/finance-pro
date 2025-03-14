@@ -1,8 +1,18 @@
-import { Account } from "@prisma/client";
+import { Account, Deposit, Withdraw } from "@prisma/client";
 
 // Server action return types
 export type QueriesResponse = {
 	data: Account[] | null;
+	error?: string | null;
+};
+
+export type QueriesDepositsResponse = {
+	data: Deposit[] | null;
+	error?: string | null;
+};
+
+export type QueriesWithdrawsResponse = {
+	data: Withdraw[] | null;
 	error?: string | null;
 };
 
