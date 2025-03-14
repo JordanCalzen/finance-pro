@@ -13,20 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Account {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String  @db.ObjectId
-  type      String  // Example: "SAVINGS", "CHECKING", "LOAN"
-  status    String  @default("ACTIVE") // ACTIVE, CLOSED, SUSPENDED
-  balance   Float   @default(0.0)
-  currency  String  @default("UGX")
 
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  transactions Transaction[]
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
 
 enum TransactionType {
   DEPOSIT
@@ -43,7 +30,7 @@ model Transaction {
   receiverId    String?          @db.ObjectId // Only used for transfers
   description   String?
 
-  account       Account          @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  // account       Account          @relation(fields: [accountId], references: [id], onDelete: Cascade)
   // receiver      User?            @relation(fields: [receiverId], references: [id], onDelete: SetNull)
 
   createdAt     DateTime         @default(now())
@@ -79,5 +66,66 @@ model User {
   updatedAt     DateTime  @updatedAt
 
   accounts      Account[]
+  deposits      Deposit[]
+  withdraws     Withdraw[]
   // receivedTransactions Transaction[] @relation("receiver")
+}
+
+model Account {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String  @db.ObjectId
+  status    String  @default("ACTIVE") // ACTIVE, CLOSED, SUSPENDED
+  // balance   Float   @default(0.0)
+  currency  String  @default("UGX")
+  username  String 
+	email         String    @unique
+	phone         String
+	profileImage  String?
+	accountType   String
+	accountStatus String
+	initialDeposit Int
+	overdraftProtection Boolean
+	emailNotifications  Boolean
+	smsNotifications    Boolean
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Deposit {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String  @db.ObjectId
+  amount          Float
+  depositMethod   String
+  bankName        String?  // Optional field
+  accountNumber   String?  // Optional field
+  provider        String?  // Optional field for mobile money
+  phoneNumber     String?  // Optional field
+  email           String?  // Optional field
+  referenceNumber String?  // Optional field for tracking
+  notes           String?  // Optional field for additional information
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now()) // Timestamp for deposit creation
+}
+
+
+model Withdraw {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  amount             Float
+  withdrawMethod     String
+  accountDetails     String
+  reason             String
+  bankName           String? 
+  accountNumber      String?
+  accountHolderName  String?
+  swiftCode          String?
+  provider           String?
+  phoneNumber        String?
+  email              String?
+  walletAddress      String?
+  network            String?
+  userId    String  @db.ObjectId
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }

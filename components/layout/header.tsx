@@ -12,11 +12,22 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SearchIcon, BellIcon, UserIcon, SettingsIcon } from "lucide-react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { ModeToggle } from "../mode-toggle";
 import { MobileNav } from "../mobileNav";
+import { useAccount } from "@/app/hooks/useAccounts";
+import { User } from "@prisma/client";
+import { Session } from "next-auth";
 
-export function Header() {
+export function Header({ userr }: { userr: Session | null }) {
+	function getInitials(name: string): string {
+		return name
+			.split(" ") // Split by spaces
+			.map((word) => word.charAt(0)) // Get the first letter of each word
+			.join("") // Join them together
+			.toUpperCase(); // Ensure uppercase
+	}
+
 	return (
 		<header className=" border-b bg-background">
 			<div className="flex h-12 sm:h-14 items-center justify-between px-2 sm:px-4 md:px-6">
@@ -50,7 +61,13 @@ export function Header() {
 										src="/placeholder.svg?height=32&width=32"
 										alt="User"
 									/>
-									<AvatarFallback>JD</AvatarFallback>
+									{userr ? (
+										<AvatarFallback>
+											{getInitials(userr.user.name)}
+										</AvatarFallback>
+									) : (
+										<AvatarFallback>{getInitials("John Ban")}</AvatarFallback>
+									)}
 								</Avatar>
 							</Button>
 						</DropdownMenuTrigger>

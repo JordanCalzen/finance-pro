@@ -1,27 +1,35 @@
 "use client";
 
-import { BackgroundParticles } from "@/components/ui/background-particles";
 import LoginForm from "@/components/auth/login-form";
-// import { useTheme } from "next-themes";
 import { ModeToggle } from "@/components/mode-toggle";
 
 export default function ExamplePage() {
-	// const { theme, setTheme } = useTheme();
-
 	return (
-		<BackgroundParticles containerClassName="min-h-screen">
-			<div className="container py-10">
-				<div className="flex flex-col items-center justify-center space-y-8 py-10">
-					<div className="flex items-center justify-center gap-10">
-						<h1 className="text-4xl font-bold text-center">🎉Welcome</h1>
-						<ModeToggle />
-					</div>
+		<div
+			className="relative min-h-screen bg-cover bg-center"
+			style={{
+				backgroundImage: "url('/finance-pro.avif')", // Replace with your image URL
+			}}
+		>
+			{/* Linear Gradient Overlay */}
+			<div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent" />
 
-					<div className="gap-2 mt-2 w-full max-w-4xl">
-						<LoginForm />
-					</div>
+			{/* Dark Overlay for better contrast */}
+			<div className="absolute inset-0 bg-black/40" />
+
+			{/* Content */}
+			<div className="relative z-10 flex flex-col items-center justify-center min-h-screen py-10">
+				<div className="flex items-center justify-center gap-10">
+					<h1 className="text-4xl font-bold text-center text-white">
+						🎉Welcome
+					</h1>
+					<ModeToggle />
+				</div>
+
+				<div className="gap-2 mt-2 w-full max-w-4xl">
+					<LoginForm />
 				</div>
 			</div>
-		</BackgroundParticles>
+		</div>
 	);
 }

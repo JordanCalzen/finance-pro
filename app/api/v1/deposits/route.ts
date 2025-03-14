@@ -1,29 +1,24 @@
 import { FormValues } from "@/components/account-profile-form";
-import { authOptions } from "@/config/auth";
+import { DepositValues } from "@/components/deposit-form";
+// import { authOptions } from "@/config/auth";
 import { db } from "@/prisma/db";
-import { QueriesResponse } from "@/types/type";
-import { getServerSession } from "next-auth";
+// import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-	const session = await getServerSession(authOptions);
-	const userIdFromSession = session?.user.id;
-	const data: FormValues = await request.json();
+	const data: DepositValues = await request.json();
 	const {
-		username,
+		amount,
+		depositMethod,
+		bankName,
+		accountNumber,
+		provider,
+		phoneNumber,
 		email,
-		phone,
-		profileImage,
-		accountType,
-		currency,
-		accountStatus,
-		initialDeposit,
-		overdraftProtection,
-		emailNotifications,
-		smsNotifications,
-		userId: userIdFromRequest,
+		referenceNumber,
+		notes,
+		userId,
 	} = data;
-	const userId = userIdFromRequest || userIdFromSession;
 	try {
 		// Ensure userId is provided
 		if (!userId) {
@@ -38,26 +33,24 @@ export async function POST(request: NextRequest) {
 		}
 
 		// Create stack in database
-		const account = await db.account.create({
+		const deposit = await db.deposit.create({
 			data: {
-				username,
+				amount,
+				depositMethod,
+				bankName,
+				accountNumber,
+				provider,
+				phoneNumber,
 				email,
-				phone,
-				profileImage,
-				accountType,
-				currency,
-				accountStatus,
-				initialDeposit,
-				overdraftProtection,
-				emailNotifications,
-				smsNotifications,
-				userId, // Store userId in the database
+				referenceNumber,
+				notes,
+				userId,
 			},
 		});
 		return NextResponse.json(
 			{
 				message: "created",
-				data: account,
+				data: deposit,
 				error: null,
 			},
 			{ status: 201 }
@@ -75,9 +68,9 @@ export async function POST(request: NextRequest) {
 	}
 }
 
-export async function GET(): Promise<NextResponse<QueriesResponse>> {
+export async function GET() {
 	try {
-		const accounts = await db.account.findMany({
+		const deposits = await db.deposit.findMany({
 			include: {
 				user: true,
 			},
@@ -85,7 +78,7 @@ export async function GET(): Promise<NextResponse<QueriesResponse>> {
 		return NextResponse.json(
 			{
 				message: "created",
-				data: accounts,
+				data: deposits,
 				error: null,
 			},
 			{ status: 201 }
@@ -94,7 +87,6 @@ export async function GET(): Promise<NextResponse<QueriesResponse>> {
 		console.log(error);
 		return NextResponse.json(
 			{
-				message: "Failed",
 				data: null,
 				error: "something went wrong",
 			},

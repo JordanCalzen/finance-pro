@@ -210,12 +210,12 @@ const navItems = [
 		icon: HomeIcon,
 		roles: ["ADMIN"],
 	},
-	{
-		href: "#",
-		label: "Analytics",
-		icon: LineChartIcon,
-		roles: ["USER"],
-	},
+	// {
+	// 	href: "#",
+	// 	label: "Analytics",
+	// 	icon: LineChartIcon,
+	// 	roles: ["USER"],
+	// },
 	{
 		href: "#",
 		label: "Transactions",
@@ -229,13 +229,13 @@ const navItems = [
 		roles: ["USER"],
 	},
 	{
-		href: "/withdraw",
+		href: "/dashboard/withdraw",
 		label: "Withdraw",
 		icon: PiHandWithdrawDuotone,
 		roles: ["USER"],
 	},
 	{
-		href: "/deposits",
+		href: "/dashboard/deposit",
 		label: "Deposits",
 		icon: RiLuggageDepositLine,
 		roles: ["USER"],
@@ -253,7 +253,7 @@ const navItems = [
 		roles: ["USER"],
 	},
 	{
-		href: "/setup",
+		href: "/dashboard/setup",
 		label: "Settings",
 		icon: SettingsIcon,
 		roles: ["USER"],

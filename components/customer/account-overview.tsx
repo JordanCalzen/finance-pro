@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Account } from "@prisma/client";
 import {
 	ArrowDownIcon,
 	ArrowUpIcon,
@@ -7,7 +8,7 @@ import {
 } from "lucide-react";
 
 // This would typically fetch data from an API
-async function getAccountData() {
+function getAccountData() {
 	// Simulated API call
 	return {
 		currentBalance: 12450.75,
@@ -19,8 +20,8 @@ async function getAccountData() {
 	};
 }
 
-export async function AccountOverview() {
-	const accountData = await getAccountData();
+export function AccountOverview({ account }: { account: Account }) {
+	const accountData = getAccountData();
 
 	return (
 		<>
@@ -31,7 +32,8 @@ export async function AccountOverview() {
 				</CardHeader>
 				<CardContent>
 					<div className="text-2xl font-bold">
-						${accountData.currentBalance.toLocaleString()}
+						{account.currency}
+						{accountData.currentBalance.toLocaleString()}
 					</div>
 					<p className="text-xs text-muted-foreground">
 						Available for withdrawal
@@ -46,7 +48,8 @@ export async function AccountOverview() {
 				</CardHeader>
 				<CardContent>
 					<div className="text-2xl font-bold">
-						${accountData.totalDeposits.toLocaleString()}
+						{account.currency}
+						{accountData.totalDeposits.toLocaleString()}
 					</div>
 					<p className="text-xs text-muted-foreground">Lifetime deposits</p>
 				</CardContent>
@@ -61,7 +64,8 @@ export async function AccountOverview() {
 				</CardHeader>
 				<CardContent>
 					<div className="text-2xl font-bold">
-						${accountData.totalWithdrawals.toLocaleString()}
+						{account.currency}
+						{accountData.totalWithdrawals.toLocaleString()}
 					</div>
 					<p className="text-xs text-muted-foreground">Lifetime withdrawals</p>
 				</CardContent>
@@ -74,7 +78,8 @@ export async function AccountOverview() {
 				</CardHeader>
 				<CardContent>
 					<div className="text-2xl font-bold">
-						${accountData.savingsBalance.toLocaleString()}
+						{account.currency}
+						{accountData.savingsBalance.toLocaleString()}
 					</div>
 					<p className="text-xs text-muted-foreground">Earning 2.5% APY</p>
 				</CardContent>

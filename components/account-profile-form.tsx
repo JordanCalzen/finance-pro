@@ -39,7 +39,6 @@ import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import ImageInput from "./uploader";
-import { Session } from "next-auth";
 
 // Define the form data type
 export type FormValues = {
@@ -54,17 +53,17 @@ export type FormValues = {
 	overdraftProtection: boolean;
 	emailNotifications: boolean;
 	smsNotifications: boolean;
+	userId: string;
 };
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-export default function AccountProfileForm() {
+export default function AccountProfileForm({ userId }: { userId: string }) {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 	const router = useRouter();
 	const initialImage = "/profile-placeholder.avif";
 	const [imageUrl, setImageUrl] = useState(initialImage);
-	// console.log(user);
 
 	const {
 		register,
@@ -74,8 +73,8 @@ export default function AccountProfileForm() {
 		formState: { errors },
 	} = useForm<FormValues>({
 		defaultValues: {
-			// username: user?.user.name as string,
-			// email: user.user.email as string,
+			username: "",
+			email: "",
 			phone: "",
 			accountType: "Savings",
 			currency: "UGX",
@@ -103,21 +102,25 @@ export default function AccountProfileForm() {
 	};
 
 	async function onSubmit(data: FormValues) {
-		data.profileImage = imageUrl;
+		console.log(data, "saved data");
 		setLoading(true);
+		data.profileImage = imageUrl;
+		data.initialDeposit = Number(data.initialDeposit);
+		const userID = userId;
+		const payLoad = { ...data, userID };
 		try {
 			const res = await fetch(`${baseUrl}/api/v1/accounts`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(data),
+				body: JSON.stringify(payLoad),
 			});
-			if (res.ok) {
+			if (res) {
 				setLoading(false);
 				toast.success("Account created");
-				router.push("/");
-				router.refresh();
+				// router.push("/");
+				// router.refresh();
 			}
 			console.log(res);
 		} catch (error) {

@@ -1,6 +1,5 @@
+"use client";
 import { Suspense } from "react";
-import { SettingsIcon } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -18,8 +17,27 @@ import { QuickActions } from "./quick-actions";
 import { LoanManagement } from "./loan-management";
 import { SavingsManagement } from "./savings-management";
 import { SupportSection } from "./support-section";
+import { useAccount, useAccounts } from "@/app/hooks/useAccounts";
+import { Session } from "next-auth";
 
-export default function DashboardContent() {
+export default function DashboardContent({
+	session,
+}: {
+	session: Session | null;
+}) {
+	const { Accounts, isLoading, error } = useAccounts();
+
+	console.log("Accounts Data:", Accounts);
+	console.log("Session Data:", session);
+
+	if (isLoading) return <p>Loading...</p>;
+	if (error) return <p>Error loading accounts</p>;
+	if (!Accounts || Accounts.length === 0) return <p>No accounts found</p>;
+
+	const filteredAccounts = Accounts.filter(
+		(account) => session?.user?.id && account.userId === session.user.id
+	);
+	const firstAccount = filteredAccounts[0];
 	return (
 		<div className="flex flex-col">
 			<div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
@@ -38,7 +56,14 @@ export default function DashboardContent() {
 					<TabsContent value="overview" className="space-y-4">
 						<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 							<Suspense fallback={<Skeleton className="h-[125px] w-full" />}>
-								<AccountOverview />
+								{firstAccount ? (
+									<AccountOverview
+										key={firstAccount.id}
+										account={firstAccount}
+									/>
+								) : (
+									<p>No account data available.</p>
+								)}
 							</Suspense>
 						</div>
 

@@ -11,12 +11,14 @@ export default async function DashboardLayout({
 }: {
 	children: ReactNode;
 }) {
-	const user = await getServerSession(authOptions);
-	const role = user?.user.role;
-	if (!user) {
+	const session = await getServerSession(authOptions);
+	const role = session?.user.role;
+
+	if (!session) {
 		redirect("/login");
 	}
-	// console.log(role);
+	const userData = session;
+
 	return (
 		<div className={`min-h-screen bg-background`}>
 			{/* Mobile Menu */}
@@ -29,7 +31,7 @@ export default async function DashboardLayout({
 				<main className="flex-1 lg:pl-64">
 					{/* Header */}
 					<div className="sticky top-0 z-40">
-						<Header />
+						<Header userr={userData} />
 					</div>
 
 					{children}
